@@ -152,7 +152,7 @@ const Rezayatname = () => {
       formDataToSend.append("studentName", formData.studentName);
       formDataToSend.append("relation", formData.relation);
 
-      await axios.post("https://camprejister.vercel.app", formDataToSend, {
+      await axios.post("https://camprejister.vercel.app/api/upload", formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
