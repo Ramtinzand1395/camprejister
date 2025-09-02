@@ -3,9 +3,9 @@ import cloudinary from "cloudinary";
 import streamifier from "streamifier";
 
 cloudinary.v2.config({
-  cloud_name: "ordo",
-  api_key: "485484743158249",
-  api_secret: "Ea7yTOhQXQk35qJw-KCFnUS6oKY",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "ordo",
+  api_key: process.env.CLOUDINARY_API_KEY || "485484743158249",
+  api_secret: process.env.CLOUDINARY_API_SECRET || "Ea7yTOhQXQk35qJw-KCFnUS6oKY",
 });
 
 const storage = multer.memoryStorage();
@@ -24,7 +24,10 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ message: "Method Not Allowed" });
 
   try {
-    await new Promise((resolve, reject) => upload.single("pdf")(req, {}, (err) => (err ? reject(err) : resolve())));
+    await new Promise((resolve, reject) =>
+      upload.single("pdf")(req, {}, (err) => (err ? reject(err) : resolve()))
+    );
+
     const { parentName, studentName, relation } = req.body;
     const pdfFile = req.file;
     if (!pdfFile) return res.status(400).json({ message: "PDF آپلود نشد!" });
