@@ -4,6 +4,8 @@ import axios from "axios";
 import vazirFontBase64 from "../components/base copy"; // فایل فونت base64
 import Canvas from "../components/Canves";
 import emailjs from "@emailjs/browser";
+import Bimari from "../components/Bimari";
+import HassasiatComp from "../components/HassasiatComp";
 
 const getPersianDate = () => {
   const date = new Date();
@@ -21,6 +23,12 @@ const Rezayatname = () => {
     relation: "",
   });
 
+  const [haveIllness, setHaveIllness] = useState(null); // null=انتخاب نشده
+  const [bimari, setBimari] = useState("");
+
+  const [haveHassasiat, setHaveHassasiat] = useState(null);
+  const [Hassasiat, setHassasiat] = useState("");
+
   const canvasRef = useRef(null);
 
   const handleChange = (e) => {
@@ -28,18 +36,19 @@ const Rezayatname = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // const handleSubmit = async () => {
-  //   if(formData.parentName === "" ||formData.studentName ==="" || formData.relation ===""  ){
-  //     alert("همه موارد را به صورت صحیح و فارسی تکمیل کنید.")
-  //     return
-  //   }
-  //   const canvas = canvasRef.current;
-  //   const signatureImage = canvas.toDataURL("image/png");
   const handleSubmit = async () => {
     const persianRegex = /^[\u0600-\u06FF\s]+$/; // حروف فارسی و فاصله
 
     // بررسی خالی بودن فیلدها
-    if (!formData.parentName || !formData.studentName || !formData.relation) {
+    if (
+      !formData.parentName ||
+      !formData.studentName ||
+      !formData.relation ||
+      haveIllness === null ||
+      haveHassasiat === null ||
+      bimari === "" ||
+      Hassasiat === ""
+    ) {
       alert("همه موارد را به صورت صحیح تکمیل کنید.");
       return;
     }
@@ -152,6 +161,15 @@ const Rezayatname = () => {
       formDataToSend.append("studentName", formData.studentName);
       formDataToSend.append("relation", formData.relation);
 
+      formDataToSend.append("haveIllness", haveIllness);
+      formDataToSend.append("bimari", bimari);
+      formDataToSend.append("haveHassasiat", haveHassasiat);
+      formDataToSend.append("Hassasiat", Hassasiat);
+
+      haveIllness;
+      bimari;
+      haveHassasiat;
+      Hassasiat;
       const data = await axios.post(
         "https://ordotabestan.vercel.app/api/upload",
         formDataToSend,
@@ -275,9 +293,26 @@ const Rezayatname = () => {
           می‌پذیرم.
         </li>
       </ul>
+      <div className="flex flex-col justify-center">
+        <Bimari
+          haveIllness={haveIllness}
+          setHaveIllness={setHaveIllness}
+          bimari={bimari}
+          setBimari={setBimari}
+        />
+        <HassasiatComp
+          haveHassasiat={haveHassasiat}
+          setHaveHassasiat={setHaveHassasiat}
+          Hassasiat={Hassasiat}
+          setHassasiat={setHassasiat}
+        />
+      </div>
       {/* Canvas امضا */}
       <div className="mt-6">
         <label className="block mb-2 font-medium">امضا ولی:</label>
+        <p className="text-xs text-red-600 my-2">
+          با موس یا انگشت داخل باکس بکشید
+        </p>
 
         <Canvas canvasRef={canvasRef} />
       </div>
