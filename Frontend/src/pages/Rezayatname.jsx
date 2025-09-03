@@ -390,7 +390,7 @@ const Rezayatname = () => {
       >
         {Loading ? "loading..." : "  ثبت فرم"}
       </button>
-      {Finish.OpenModall && <FinishModal data={Finish.data} />}
+      {Finish.OpenModall && <FinishModal data={Finish.data.fileUrl} />}
     </div>
   );
 };
