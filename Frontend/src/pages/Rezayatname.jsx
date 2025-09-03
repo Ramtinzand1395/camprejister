@@ -27,7 +27,6 @@ const Rezayatname = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-
   const handleSubmit = async () => {
     const canvas = canvasRef.current;
     const signatureImage = canvas.toDataURL("image/png");
@@ -117,14 +116,14 @@ const Rezayatname = () => {
       formDataToSend.append("studentName", formData.studentName);
       formDataToSend.append("relation", formData.relation);
 
-    const data =  await axios.post(
+      const data = await axios.post(
         "https://ordotabestan.vercel.app/api/upload",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-console.log(data)
+      console.log(data);
       alert("فرم با موفقیت به سرور ارسال شد!");
     } catch (error) {
       console.error(error);
@@ -134,7 +133,6 @@ console.log(data)
     }
   };
   const [Loading, setLoading] = useState(false);
-
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl mt-10">
@@ -225,30 +223,8 @@ console.log(data)
       {/* Canvas امضا */}
       <div className="mt-6">
         <label className="block mb-2 font-medium">امضا ولی:</label>
-        {/* <canvas
-          ref={canvasRef}
-          width={500}
-          height={150}
-          className="border border-gray-400 rounded"
-          onMouseDown={startDrawing}
-          onMouseMove={draw}
-          onMouseUp={stopDrawing}
-          onMouseLeave={stopDrawing}
-          onTouchStart={startDrawing}
-          onTouchMove={draw}
-          onTouchEnd={stopDrawing}
-        />
 
-        <div className="mt-2 flex gap-2">
-          <button
-            type="button"
-            onClick={clearCanvas}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            پاک کردن
-          </button>
-        </div> */}
-        <Canvas />
+        <Canvas canvasRef={canvasRef} />
       </div>
 
       <button
