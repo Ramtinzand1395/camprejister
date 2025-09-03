@@ -7,6 +7,7 @@ import emailjs from "@emailjs/browser";
 import Bimari from "../components/Bimari";
 import HassasiatComp from "../components/HassasiatComp";
 import FinishModal from "../components/FinishModal";
+import ProgressBar from "../components/ProgressBar";
 
 const getPersianDate = () => {
   const date = new Date();
@@ -18,6 +19,12 @@ const getPersianDate = () => {
 };
 
 const Rezayatname = () => {
+  
+  const fetchData = async () => {
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 4000)); // تست
+    setLoading(false);
+  }
   const [formData, setFormData] = useState({
     parentName: "",
     studentName: "",
@@ -183,7 +190,7 @@ const Rezayatname = () => {
     const pdfBlob = doc.output("blob");
 
     try {
-      setLoading(true);
+      fetchData();
       const formDataToSend = new FormData();
       formDataToSend.append("pdf", pdfBlob, "consent_form.pdf");
       formDataToSend.append("parentName", formData.parentName);
@@ -248,8 +255,7 @@ const Rezayatname = () => {
       console.error(error);
       alert("ارسال فرم به سرور با خطا مواجه شد.");
     } finally {
-      setLoading(false);
-    }
+      fetchData()    }
   };
   const [Loading, setLoading] = useState(false);
 
@@ -389,6 +395,7 @@ const Rezayatname = () => {
         className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
       >
         {Loading ? "loading..." : "  ثبت فرم"}
+        <ProgressBar isLoading={Loading} />
       </button>
       {Finish.OpenModall && <FinishModal data={Finish.data.fileUrl} />}
     </div>
