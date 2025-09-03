@@ -117,14 +117,14 @@ const Rezayatname = () => {
       formDataToSend.append("studentName", formData.studentName);
       formDataToSend.append("relation", formData.relation);
 
-      await axios.post(
+    const data =  await axios.post(
         "https://ordotabestan.vercel.app/api/upload",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-
+console.log(data)
       alert("فرم با موفقیت به سرور ارسال شد!");
     } catch (error) {
       console.error(error);
