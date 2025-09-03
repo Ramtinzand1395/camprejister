@@ -27,13 +27,44 @@ const Rezayatname = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  // const handleSubmit = async () => {
+  //   if(formData.parentName === "" ||formData.studentName ==="" || formData.relation ===""  ){
+  //     alert("همه موارد را به صورت صحیح و فارسی تکمیل کنید.")
+  //     return
+  //   }
+  //   const canvas = canvasRef.current;
+  //   const signatureImage = canvas.toDataURL("image/png");
   const handleSubmit = async () => {
-    if(formData.parentName === "" ||formData.studentName ==="" || formData.relation ===""  ){
-      alert("همه موارد را به صورت صحیح و فارسی تکمیل کنید.")
-      return
+    const persianRegex = /^[\u0600-\u06FF\s]+$/; // حروف فارسی و فاصله
+  
+    // بررسی خالی بودن فیلدها
+    if (!formData.parentName || !formData.studentName || !formData.relation) {
+      alert("همه موارد را به صورت صحیح تکمیل کنید.");
+      return;
     }
+  
+    // بررسی فارسی بودن فیلدها
+    if (
+      !persianRegex.test(formData.parentName) ||
+      !persianRegex.test(formData.studentName) ||
+      !persianRegex.test(formData.relation)
+    ) {
+      alert("لطفاً همه موارد را فقط با حروف فارسی وارد کنید.");
+      return;
+    }
+  
     const canvas = canvasRef.current;
     const signatureImage = canvas.toDataURL("image/png");
+  
+    // بررسی خالی بودن امضا
+    const blankCanvas = document.createElement("canvas");
+    blankCanvas.width = canvas.width;
+    blankCanvas.height = canvas.height;
+    const blankImage = blankCanvas.toDataURL("image/png");
+    if (signatureImage === blankImage) {
+      alert("لطفاً امضا را وارد کنید.");
+      return;
+    }
 
     const doc = new jsPDF({
       orientation: "portrait",
