@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import jsPDF from "jspdf";
 import axios from "axios";
 import vazirFontBase64 from "../components/base copy"; // فایل فونت base64
+import Canvas from "../components/Canves";
 
 const getPersianDate = () => {
   const date = new Date();
@@ -291,7 +292,7 @@ const Rezayatname = () => {
       {/* Canvas امضا */}
       <div className="mt-6">
         <label className="block mb-2 font-medium">امضا ولی:</label>
-        <canvas
+        {/* <canvas
           ref={canvasRef}
           width={500}
           height={150}
@@ -313,7 +314,8 @@ const Rezayatname = () => {
           >
             پاک کردن
           </button>
-        </div>
+        </div> */}
+        <Canvas />
       </div>
 
       <button
