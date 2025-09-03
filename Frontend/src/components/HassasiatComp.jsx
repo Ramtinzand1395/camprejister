@@ -46,7 +46,10 @@ const HassasiatComp = ({
 
       {haveHassasiat && (
         <div className="mt-4">
-          <h3>نوع حساسیت و دارویی که مصرف می‌کنید را بنویسید:</h3>
+          <h3 className="text-sm text-red-500">
+            در صورتی که از داروی خاصی استفاده می‌شود نام دقیق آن، میزان و دوز
+            مصرف، روش و زمان مصرف آن را با جزییات شرح دهید
+          </h3>
           <textarea
             value={Hassasiat}
             onChange={(e) => setHassasiat(e.target.value)}

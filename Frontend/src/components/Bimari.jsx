@@ -41,7 +41,11 @@ const Bimari = ({ haveIllness, setHaveIllness, bimari, setBimari }) => {
 
       {haveIllness && (
         <div className="mt-4">
-          <h3>نوع بیماری و دارویی که مصرف می‌کنید را بنویسید:</h3>
+          <h3 className="text-sm text-red-500">
+          لطفا در صورت وجود هرگونه مشکل سلامتی، جزئیات آن به‌طور کامل در زیر
+            شرح دهید: هر گونه بیماری خاص( آسم، صرع، تشنج، مشکلات قلبی عروقی)،
+            آلرژی، سابقه جراحی و ... :
+          </h3>
           <textarea
             value={bimari}
             onChange={(e) => setBimari(e.target.value)}
