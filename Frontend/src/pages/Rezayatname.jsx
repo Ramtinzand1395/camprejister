@@ -3,6 +3,7 @@ import jsPDF from "jspdf";
 import axios from "axios";
 import vazirFontBase64 from "../components/base copy"; // فایل فونت base64
 import Canvas from "../components/Canves";
+import emailjs from "@emailjs/browser";
 
 const getPersianDate = () => {
   const date = new Date();
@@ -36,13 +37,13 @@ const Rezayatname = () => {
   //   const signatureImage = canvas.toDataURL("image/png");
   const handleSubmit = async () => {
     const persianRegex = /^[\u0600-\u06FF\s]+$/; // حروف فارسی و فاصله
-  
+
     // بررسی خالی بودن فیلدها
     if (!formData.parentName || !formData.studentName || !formData.relation) {
       alert("همه موارد را به صورت صحیح تکمیل کنید.");
       return;
     }
-  
+
     // بررسی فارسی بودن فیلدها
     if (
       !persianRegex.test(formData.parentName) ||
@@ -52,10 +53,10 @@ const Rezayatname = () => {
       alert("لطفاً همه موارد را فقط با حروف فارسی وارد کنید.");
       return;
     }
-  
+
     const canvas = canvasRef.current;
     const signatureImage = canvas.toDataURL("image/png");
-  
+
     // بررسی خالی بودن امضا
     const blankCanvas = document.createElement("canvas");
     blankCanvas.width = canvas.width;
@@ -159,6 +160,25 @@ const Rezayatname = () => {
         }
       );
       console.log(data);
+      if (data.status === 200) {
+        try {
+          const templateParams = {
+            parentName: formData.parentName,
+            studentName: formData.studentName,
+            relation: formData.relation,
+            pdfUrl: data.data.fileUrl, // URL فایل PDF آپلود شده روی سرور
+          };
+
+          await emailjs.send(
+            "service_lgvd31t", // از EmailJS بگیر
+            "template_vrmxxsd", // از EmailJS بگیر
+            templateParams,
+            "oXgRCi8-t7OO2ooqA" // از EmailJS بگیر
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }
       alert("فرم با موفقیت به سرور ارسال شد!");
     } catch (error) {
       console.error(error);
