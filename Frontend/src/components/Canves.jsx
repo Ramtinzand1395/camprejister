@@ -24,7 +24,10 @@ const Canvas = ({ onChange }) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.beginPath();
-    ctx.moveTo(e.nativeEvent.offsetX || e.touches[0].clientX, e.nativeEvent.offsetY || e.touches[0].clientY);
+    ctx.moveTo(
+      e.nativeEvent.offsetX || e.touches[0].clientX,
+      e.nativeEvent.offsetY || e.touches[0].clientY
+    );
     setIsDrawing(true);
   };
 
@@ -32,8 +35,12 @@ const Canvas = ({ onChange }) => {
     if (!isDrawing) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    const x = e.nativeEvent?.offsetX ?? e.touches[0].clientX - canvas.getBoundingClientRect().left;
-    const y = e.nativeEvent?.offsetY ?? e.touches[0].clientY - canvas.getBoundingClientRect().top;
+    const x =
+      e.nativeEvent?.offsetX ??
+      e.touches[0].clientX - canvas.getBoundingClientRect().left;
+    const y =
+      e.nativeEvent?.offsetY ??
+      e.touches[0].clientY - canvas.getBoundingClientRect().top;
     ctx.lineTo(x, y);
     ctx.stroke();
     if (onChange) onChange(canvas.toDataURL("image/png"));
@@ -60,7 +67,13 @@ const Canvas = ({ onChange }) => {
         onTouchMove={draw}
         onTouchEnd={stopDrawing}
       />
-      <button onClick={clearCanvas}>پاک کردن</button>
+      <button
+        type="button"
+        onClick={clearCanvas}
+        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+      >
+        پاک کردن
+      </button>{" "}
     </>
   );
 };

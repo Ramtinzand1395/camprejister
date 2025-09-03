@@ -20,42 +20,12 @@ const Rezayatname = () => {
     relation: "",
   });
 
-  const canvasRef = useRef(null);
-  const [isDrawing, setIsDrawing] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // // شروع و رسم امضا
-  // const startDrawing = (e) => {
-  //   const canvas = canvasRef.current;
-  //   const ctx = canvas.getContext("2d");
-  //   ctx.strokeStyle = "black";
-  //   ctx.lineWidth = 2;
-  //   ctx.lineJoin = "round";
-  //   ctx.lineCap = "round";
-  //   ctx.beginPath();
-  //   ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-  //   setIsDrawing(true);
-  // };
-
-  // const draw = (e) => {
-  //   if (!isDrawing) return;
-  //   const canvas = canvasRef.current;
-  //   const ctx = canvas.getContext("2d");
-  //   ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-  //   ctx.stroke();
-  // };
-
-  // const stopDrawing = () => setIsDrawing(false);
-
-  const clearCanvas = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  };
 
   const handleSubmit = async () => {
     const canvas = canvasRef.current;
@@ -164,44 +134,6 @@ const Rezayatname = () => {
   };
   const [Loading, setLoading] = useState(false);
 
-  const getCoordinates = (event) => {
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-
-    if (event.touches) {
-      // برای موبایل
-      return {
-        x: event.touches[0].clientX - rect.left,
-        y: event.touches[0].clientY - rect.top,
-      };
-    } else {
-      // برای دسکتاپ
-      return {
-        x: event.clientX - rect.left,
-        y: event.clientY - rect.top,
-      };
-    }
-  };
-
-  const startDrawing = (event) => {
-    const { x, y } = getCoordinates(event);
-    setIsDrawing(true);
-    const ctx = canvasRef.current.getContext("2d");
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-  };
-
-  const draw = (event) => {
-    if (!isDrawing) return;
-    const { x, y } = getCoordinates(event);
-    const ctx = canvasRef.current.getContext("2d");
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  };
-
-  const stopDrawing = () => {
-    setIsDrawing(false);
-  };
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl mt-10">
