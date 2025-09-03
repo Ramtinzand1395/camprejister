@@ -3,9 +3,8 @@ import React from "react";
 const FinishModal = ({ data }) => {
     console.log(data)
   // ساخت لینک دانلود با پسوند .pdf
-  const downloadUrl = data?.fileUrl
-    ? `${data.fileUrl}.pdf`
-    : null;
+  const downloadUrl = data?.fileUrl ? `${data.fileUrl}.pdf` : null;
+
 
   const handleClose = () => {
     window.location.href = "/"; // ریدایرکت به صفحه اول + رفرش

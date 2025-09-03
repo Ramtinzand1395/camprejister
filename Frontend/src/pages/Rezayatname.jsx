@@ -397,7 +397,7 @@ const Rezayatname = () => {
         {Loading ? "loading..." : "  ثبت فرم"}
         <ProgressBar isLoading={Loading} />
       </button>
-      {Finish.OpenModall && <FinishModal data={Finish.data.fileUrl} />}
+      {Finish.OpenModall && <FinishModal data={Finish.data} />}
     </div>
   );
 };
