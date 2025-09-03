@@ -191,7 +191,7 @@ const Rezayatname = () => {
             relation: formData.relation,
             pdfUrl: data.data.fileUrl, // URL فایل PDF آپلود شده روی سرور
             hassasiat:Hassasiat,
-            bimari:Bimari
+            bimari:bimari
           };
 
           await emailjs.send(
