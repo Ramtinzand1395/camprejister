@@ -19,12 +19,6 @@ const getPersianDate = () => {
 };
 
 const Rezayatname = () => {
-  
-  const fetchData = async () => {
-    setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 4000)); // تست
-    setLoading(false);
-  }
   const [formData, setFormData] = useState({
     parentName: "",
     studentName: "",
@@ -190,7 +184,7 @@ const Rezayatname = () => {
     const pdfBlob = doc.output("blob");
 
     try {
-      fetchData();
+      setLoading(true);
       const formDataToSend = new FormData();
       formDataToSend.append("pdf", pdfBlob, "consent_form.pdf");
       formDataToSend.append("parentName", formData.parentName);
@@ -249,13 +243,14 @@ const Rezayatname = () => {
 
       setFinish({
         OpenModall: true,
-        data: data,
+        data: data.data,
       });
     } catch (error) {
       console.error(error);
       alert("ارسال فرم به سرور با خطا مواجه شد.");
     } finally {
-      fetchData()    }
+      setLoading(false);
+    }
   };
   const [Loading, setLoading] = useState(false);
 
@@ -395,7 +390,6 @@ const Rezayatname = () => {
         className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
       >
         {Loading ? "loading..." : "  ثبت فرم"}
-        <ProgressBar isLoading={Loading} />
       </button>
       {Finish.OpenModall && <FinishModal data={Finish.data} />}
     </div>
