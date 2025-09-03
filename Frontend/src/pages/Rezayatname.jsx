@@ -28,8 +28,10 @@ const Rezayatname = () => {
 
 
   const handleSubmit = async () => {
-    const canvas = canvasRef.current;
-    const signatureImage = canvas.toDataURL("image/png");
+    // const canvas = canvasRef.current;
+    const canvasRef = useRef(null);
+
+    const signatureImage = canvasRef.current.getCanvas().toDataURL("image/png");
 
     const doc = new jsPDF({
       orientation: "portrait",

@@ -8,7 +8,6 @@ const Canvas = ({ onChange }) => {
     const canvas = canvasRef.current;
     const parentWidth = canvas.parentElement.offsetWidth;
 
-    // اندازه canvas بر اساس عرض والد و DPI صفحه
     canvas.width = parentWidth * window.devicePixelRatio;
     canvas.height = 150 * window.devicePixelRatio;
 
@@ -20,33 +19,45 @@ const Canvas = ({ onChange }) => {
     ctx.strokeStyle = "black";
   }, []);
 
+  const getCoordinates = (e) => {
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+
+    if (e.touches) {
+      return {
+        x: e.touches[0].clientX - rect.left,
+        y: e.touches[0].clientY - rect.top,
+      };
+    } else {
+      return { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY };
+    }
+  };
+
   const startDrawing = (e) => {
+    e.preventDefault(); // جلوگیری از اسکرول صفحه
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+    const { x, y } = getCoordinates(e);
     ctx.beginPath();
-    ctx.moveTo(
-      e.nativeEvent.offsetX || e.touches[0].clientX,
-      e.nativeEvent.offsetY || e.touches[0].clientY
-    );
+    ctx.moveTo(x, y);
     setIsDrawing(true);
   };
 
   const draw = (e) => {
+    e.preventDefault(); // جلوگیری از اسکرول صفحه
     if (!isDrawing) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    const x =
-      e.nativeEvent?.offsetX ??
-      e.touches[0].clientX - canvas.getBoundingClientRect().left;
-    const y =
-      e.nativeEvent?.offsetY ??
-      e.touches[0].clientY - canvas.getBoundingClientRect().top;
+    const { x, y } = getCoordinates(e);
     ctx.lineTo(x, y);
     ctx.stroke();
     if (onChange) onChange(canvas.toDataURL("image/png"));
   };
 
-  const stopDrawing = () => setIsDrawing(false);
+  const stopDrawing = (e) => {
+    e?.preventDefault();
+    setIsDrawing(false);
+  };
 
   const clearCanvas = () => {
     const canvas = canvasRef.current;
@@ -58,7 +69,7 @@ const Canvas = ({ onChange }) => {
     <>
       <canvas
         ref={canvasRef}
-        className="border border-gray-400 rounded w-full"
+        className="border border-gray-400 rounded w-full touch-none"
         onMouseDown={startDrawing}
         onMouseMove={draw}
         onMouseUp={stopDrawing}
@@ -70,10 +81,10 @@ const Canvas = ({ onChange }) => {
       <button
         type="button"
         onClick={clearCanvas}
-        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 mt-2"
       >
         پاک کردن
-      </button>{" "}
+      </button>
     </>
   );
 };
