@@ -26,7 +26,10 @@ const Bimari = ({ haveIllness, setHaveIllness, bimari, setBimari }) => {
             type="radio"
             name="illness"
             checked={haveIllness === false}
-            onChange={() => setHaveIllness(false)}
+            onChange={() => {
+              setHaveIllness(false);
+              setBimari("");
+            }}
           />
           <svg className="ml-2" viewBox="0 0 64 64" height="2em" width="2em">
             <path
@@ -42,7 +45,7 @@ const Bimari = ({ haveIllness, setHaveIllness, bimari, setBimari }) => {
       {haveIllness && (
         <div className="mt-4">
           <h3 className="text-sm text-red-500">
-          لطفا در صورت وجود هرگونه مشکل سلامتی، جزئیات آن به‌طور کامل در زیر
+            لطفا در صورت وجود هرگونه مشکل سلامتی، جزئیات آن به‌طور کامل در زیر
             شرح دهید: هر گونه بیماری خاص( آسم، صرع، تشنج، مشکلات قلبی عروقی)،
             آلرژی، سابقه جراحی و ... :
           </h3>

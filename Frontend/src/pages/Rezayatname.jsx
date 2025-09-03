@@ -336,18 +336,6 @@ const Rezayatname = () => {
         </li>
       </ul>
       <div className="flex flex-col justify-center">
-        {/* <Bimari
-          haveIllness={formData.haveIllness}
-          setHaveIllness={formData.setHaveIllness}
-          bimari={formData.bimari}
-          setBimari={formData.setBimari}
-        />
-        <HassasiatComp
-          haveHassasiat={formData.haveHassasiat}
-          setHaveHassasiat={formData.setHaveHassasiat}
-          Hassasiat={formData.Hassasiat}
-          setHassasiat={formData.setHassasiat}
-        /> */}
         <Bimari
           haveIllness={formData.haveIllness}
           setHaveIllness={(value) =>

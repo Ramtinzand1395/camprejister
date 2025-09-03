@@ -31,7 +31,10 @@ const HassasiatComp = ({
             type="radio"
             name="hassasiat"
             checked={haveHassasiat === false}
-            onChange={() => setHaveHassasiat(false)}
+            onChange={() => {
+              setHaveHassasiat(false);
+              setHassasiat("");
+            }}
           />
           <svg className="ml-2" viewBox="0 0 64 64" height="2em" width="2em">
             <path
