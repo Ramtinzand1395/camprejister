@@ -28,6 +28,10 @@ const Rezayatname = () => {
   };
 
   const handleSubmit = async () => {
+    if(formData.parentName === "" ||formData.studentName ==="" || formData.relation ===""  ){
+      alert("همه موارد را به صورت صحیح و فارسی تکمیل کنید.")
+      return
+    }
     const canvas = canvasRef.current;
     const signatureImage = canvas.toDataURL("image/png");
 
