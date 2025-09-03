@@ -3,9 +3,9 @@ import cloudinary from "cloudinary";
 import streamifier from "streamifier";
 
 cloudinary.v2.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "ordo",
-  api_key: process.env.CLOUDINARY_API_KEY || "485484743158249",
-  api_secret: process.env.CLOUDINARY_API_SECRET || "Ea7yTOhQXQk35qJw-KCFnUS6oKY",
+  cloud_name:  "ordo",
+  api_key:  "485484743158249",
+  api_secret:  "Ea7yTOhQXQk35qJw-KCFnUS6oKY",
 });
 
 const storage = multer.memoryStorage();
