@@ -33,7 +33,8 @@ const Rezayatname = () => {
     OpenModall: false,
     data: [],
   });
-
+  console.log(formData);
+  console.log(Finish);
   const canvasRef = useRef(null);
 
   const handleChange = (e) => {
@@ -194,8 +195,14 @@ const Rezayatname = () => {
       formDataToSend.append("haveHassasiat", formData.haveHassasiat);
       formDataToSend.append("Hassasiat", formData.Hassasiat);
 
-      formDataToSend.append("foodAllergy", formData.foodAllergy);
-      formDataToSend.append("drugAllergy", formData.drugAllergy);
+      formDataToSend.append(
+        "foodAllergy",
+        formData.foodAllergy ? "ندارد" : "دارد"
+      );
+      formDataToSend.append(
+        "drugAllergy",
+        formData.drugAllergy ? "ندارد" : "دارد"
+      );
 
       formData.haveIllness;
       formData.bimari;
@@ -217,8 +224,8 @@ const Rezayatname = () => {
             pdfUrl: data.data.fileUrl, // URL فایل PDF آپلود شده روی سرور
             hassasiat: formData.Hassasiat,
             bimari: formData.bimari,
-            foodAllergy: formData.foodAllergy,
-            drugAllergy: formData.drugAllergy,
+            foodAllergy: formData.foodAllergy ? "دارد" : "ندارد",
+            drugAllergy: formData.drugAllergy ? "دارد" : "ندارد",
           };
 
           await emailjs.send(
@@ -231,11 +238,12 @@ const Rezayatname = () => {
           console.error(error);
         }
       }
+      console.log(data);
+
       setFinish({
         OpenModall: true,
         data: data,
       });
-
     } catch (error) {
       console.error(error);
       alert("ارسال فرم به سرور با خطا مواجه شد.");
