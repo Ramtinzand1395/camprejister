@@ -40,18 +40,31 @@ const Rezayatname = () => {
     const persianRegex = /^[\u0600-\u06FF\s]+$/; // حروف فارسی و فاصله
 
     // بررسی خالی بودن فیلدها
+    // if (
+    //   !formData.parentName ||
+    //   !formData.studentName ||
+    //   !formData.relation ||
+    //   haveIllness === null ||
+    //   haveHassasiat === null ||
+    //   bimari === "" ||
+    //   Hassasiat === ""
+    // ) {
+    //   alert("همه موارد را به صورت صحیح تکمیل کنید.");
+    //   return;
+    // }
     if (
       !formData.parentName ||
       !formData.studentName ||
       !formData.relation ||
       haveIllness === null ||
       haveHassasiat === null ||
-      bimari === "" ||
-      Hassasiat === ""
+      (haveIllness === true && bimari.trim() === "") ||
+      (haveHassasiat === true && Hassasiat.trim() === "")
     ) {
       alert("همه موارد را به صورت صحیح تکمیل کنید.");
       return;
     }
+    
 
     // بررسی فارسی بودن فیلدها
     if (
@@ -146,12 +159,24 @@ const Rezayatname = () => {
       align: "right",
     });
     y += lineHeight * 2;
-    doc.text(`بیماری: ${bimari}`, pageWidth - 40, y, {
-      align: "right",
-    });
-    doc.text(`حسساسیت: ${Hassasiat}`, pageWidth - 40, y, {
-      align: "right",
-    });
+  
+    doc.text(
+      `بیماری: ${haveIllness ? bimari || "ذکر نشده" : "هیچ بیماری‌ای ندارم"}`,
+      pageWidth - 40,
+      y,
+      { align: "right" }
+    );
+    y += lineHeight;
+    
+    doc.text(
+      `حساسیت: ${haveHassasiat ? Hassasiat || "ذکر نشده" : "هیچ حساسیتی ندارم"}`,
+      pageWidth - 40,
+      y,
+      { align: "right" }
+    );
+    y += lineHeight * 2;
+
+    
     // اضافه کردن امضا در سمت راست
     doc.addImage(signatureImage, "PNG", pageWidth - 240, y, 200, 100);
 
