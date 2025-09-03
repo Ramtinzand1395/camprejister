@@ -1,10 +1,29 @@
 import React from "react";
 
 const FinishModal = ({ data }) => {
-    console.log(data)
-  // ساخت لینک دانلود با پسوند .pdf
-  const downloadUrl = data?.fileUrl ? `${data.fileUrl}.pdf` : null;
+  console.log(data);
 
+  // دانلود فایل PDF از لینک Cloudinary
+  const handleDownload = async () => {
+    if (!data?.fileUrl) return;
+
+    try {
+      const response = await fetch(data.fileUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "form.pdf"; // اسم فایل دلخواه
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("دانلود موفق نبود:", err);
+      alert("دانلود فایل با مشکل مواجه شد.");
+    }
+  };
 
   const handleClose = () => {
     window.location.href = "/"; // ریدایرکت به صفحه اول + رفرش
@@ -22,16 +41,13 @@ const FinishModal = ({ data }) => {
           توجه داشته باشید حضور تمامی شرکت کننده‌ها رأس ساعت ۶ بامداد چهارشنبه درب آتشکده الزامی می‌باشد.
         </p>
 
-        {downloadUrl ? (
-          <a
-            href={downloadUrl}
-            download="form.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
+        {data?.fileUrl ? (
+          <button
+            onClick={handleDownload}
             className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
           >
             دانلود فایل PDF رضایت نامه
-          </a>
+          </button>
         ) : (
           <p className="text-red-500">لینک فایل موجود نیست!</p>
         )}
