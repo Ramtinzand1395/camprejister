@@ -30,7 +30,7 @@ const Rezayatname = () => {
     drugAllergy: false,
   });
   const [Finish, setFinish] = useState({
-    OpenModall: true,
+    OpenModall: false,
     data: [],
   });
 
