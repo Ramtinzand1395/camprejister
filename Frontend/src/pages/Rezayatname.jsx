@@ -21,12 +21,12 @@ const Rezayatname = () => {
 
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+  
   // شروع و رسم امضا
   const startDrawing = (e) => {
     const canvas = canvasRef.current;
@@ -39,7 +39,7 @@ const Rezayatname = () => {
     ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     setIsDrawing(true);
   };
-
+  
   const draw = (e) => {
     if (!isDrawing) return;
     const canvas = canvasRef.current;
@@ -47,7 +47,7 @@ const Rezayatname = () => {
     ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     ctx.stroke();
   };
-
+  
   const stopDrawing = () => setIsDrawing(false);
 
   const clearCanvas = () => {
@@ -70,13 +70,13 @@ const Rezayatname = () => {
     doc.addFileToVFS("BNAZANB.ttf", vazirFontBase64);
     doc.addFont("BNAZANB.ttf", "BNAZANB", "normal");
     doc.setFont("BNAZANB");
-
+    
     const pageWidth = doc.internal.pageSize.getWidth();
     let y = 40;
     const lineHeight = 20;
 
     doc.setFontSize(14);
-
+    
     doc.text(`فرم رضایت‌نامه ولی شرکت‌کننده`, pageWidth - 40, y, {
       align: "right",
     });
@@ -95,24 +95,24 @@ const Rezayatname = () => {
     });
     y += lineHeight * 2;
     //     doc.text(
-    //       `بدین‌وسیله رضایت کامل خود را جهت شرکت فرزندم در اردوی یک و نیم روزه تابستانه کرمان
-    // مورخ ۱۹ تا ۲۰ شهریور ماه در محل آتشکده زرتشتیان کرمان که توسط کمیسیون جوانان زرتشتی کرمان برگزار می‌گردد، اعلام می‌دارم و موارد زیر را تأیید می‌کنم:`,
-    //       pageWidth - 40,
-    //       y,
-    //       { align: "right" }
-    //     );
-    //     y += lineHeight * 4;
-
-    const text = `بدین‌وسیله رضایت کامل خود را جهت شرکت فرزندم در اردوی یک و نیم روزه تابستانه کرمان 
-مورخ ۱۹ تا ۲۰ شهریور ماه در محل آتشکده زرتشتیان کرمان که توسط کمیسیون جوانان زرتشتی کرمان برگزار می‌گردد، اعلام می‌دارم و موارد زیر را تأیید می‌کنم:`;
-
-    // عرض قابل استفاده در صفحه (حاشیه 30pt)
-    const textWidth = pageWidth - 60;
-
-    // تقسیم متن به خطوط
-    const lines = doc.splitTextToSize(text, textWidth);
-
-    // چاپ متن راست‌چین
+      //       `بدین‌وسیله رضایت کامل خود را جهت شرکت فرزندم در اردوی یک و نیم روزه تابستانه کرمان
+      // مورخ ۱۹ تا ۲۰ شهریور ماه در محل آتشکده زرتشتیان کرمان که توسط کمیسیون جوانان زرتشتی کرمان برگزار می‌گردد، اعلام می‌دارم و موارد زیر را تأیید می‌کنم:`,
+      //       pageWidth - 40,
+      //       y,
+      //       { align: "right" }
+      //     );
+      //     y += lineHeight * 4;
+      
+      const text = `بدین‌وسیله رضایت کامل خود را جهت شرکت فرزندم در اردوی یک و نیم روزه تابستانه کرمان 
+      مورخ ۱۹ تا ۲۰ شهریور ماه در محل آتشکده زرتشتیان کرمان که توسط کمیسیون جوانان زرتشتی کرمان برگزار می‌گردد، اعلام می‌دارم و موارد زیر را تأیید می‌کنم:`;
+      
+      // عرض قابل استفاده در صفحه (حاشیه 30pt)
+      const textWidth = pageWidth - 60;
+      
+      // تقسیم متن به خطوط
+      const lines = doc.splitTextToSize(text, textWidth);
+      
+      // چاپ متن راست‌چین
     doc.text(lines, pageWidth - 30, y, { align: "right" });
 
     // بروزرسانی y بر اساس تعداد خطوط
@@ -127,12 +127,12 @@ const Rezayatname = () => {
       "در صورت بروز رفتار نامناسب، تصمیم نهایی با برگزارکنندگان است.",
       "با شرکت فرزندم در اردو موافقت می‌کنم و تمام شرایط و ضوابط آن را می‌پذیرم.",
     ];
-
+    
     bulletPoints.forEach((text) => {
       doc.text(`• ${text}`, pageWidth - 60, y, { align: "right" });
       y += lineHeight;
     });
-
+    
     y += lineHeight;
     doc.text(`تاریخ: ${getPersianDate()}`, pageWidth - 40, y, {
       align: "right",
@@ -141,17 +141,18 @@ const Rezayatname = () => {
 
     // اضافه کردن امضا در سمت راست
     doc.addImage(signatureImage, "PNG", pageWidth - 240, y, 200, 100);
-
+    
     // تبدیل PDF به blob
     const pdfBlob = doc.output("blob");
-
+    
     try {
+      setLoading(true)
       const formDataToSend = new FormData();
       formDataToSend.append("pdf", pdfBlob, "consent_form.pdf");
       formDataToSend.append("parentName", formData.parentName);
       formDataToSend.append("studentName", formData.studentName);
       formDataToSend.append("relation", formData.relation);
-
+      
       await axios.post("https://ordotabestan.vercel.app/api/upload", formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -160,8 +161,11 @@ const Rezayatname = () => {
     } catch (error) {
       console.error(error);
       alert("ارسال فرم به سرور با خطا مواجه شد.");
+    }finally{
+      setLoading(false)
     }
   };
+  const [Loading, setLoading] = useState(false)
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl mt-10">
@@ -281,7 +285,8 @@ const Rezayatname = () => {
         onClick={handleSubmit}
         className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
       >
-        ثبت فرم
+      
+        {Loading ? "  ثبت فرم":"loading..."}
       </button>
     </div>
   );
