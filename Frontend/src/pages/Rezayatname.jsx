@@ -25,13 +25,9 @@ const Rezayatname = () => {
     bimari: "",
     haveHassasiat: null,
     Hassasiat: "",
+    foodAllergy: false,
+    drugAllergy: false,
   });
-
-  // const [haveIllness, setHaveIllness] = useState(null); // null=انتخاب نشده
-  // const [bimari, setBimari] = useState("");
-
-  // const [haveHassasiat, setHaveHassasiat] = useState(null);
-  // const [Hassasiat, setHassasiat] = useState("");
 
   const canvasRef = useRef(null);
 
@@ -43,19 +39,6 @@ const Rezayatname = () => {
   const handleSubmit = async () => {
     const persianRegex = /^[\u0600-\u06FF\s]+$/; // حروف فارسی و فاصله
 
-    // بررسی خالی بودن فیلدها
-    // if (
-    //   !formData.parentName ||
-    //   !formData.studentName ||
-    //   !formData.relation ||
-    //   haveIllness === null ||
-    //   haveHassasiat === null ||
-    //   bimari === "" ||
-    //   Hassasiat === ""
-    // ) {
-    //   alert("همه موارد را به صورت صحیح تکمیل کنید.");
-    //   return;
-    // }
     if (
       !formData.parentName ||
       !formData.studentName ||
@@ -206,6 +189,9 @@ const Rezayatname = () => {
       formDataToSend.append("haveHassasiat", formData.haveHassasiat);
       formDataToSend.append("Hassasiat", formData.Hassasiat);
 
+      formDataToSend.append("foodAllergy", formData.foodAllergy);
+      formDataToSend.append("drugAllergy", formData.drugAllergy);
+
       formData.haveIllness;
       formData.bimari;
       formData.haveHassasiat;
@@ -217,7 +203,6 @@ const Rezayatname = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log(data);
       if (data.status === 200) {
         try {
           const templateParams = {
@@ -227,6 +212,8 @@ const Rezayatname = () => {
             pdfUrl: data.data.fileUrl, // URL فایل PDF آپلود شده روی سرور
             hassasiat: formData.Hassasiat,
             bimari: formData.bimari,
+            foodAllergy: formData.foodAllergy,
+            drugAllergy: formData.drugAllergy,
           };
 
           await emailjs.send(
@@ -248,12 +235,16 @@ const Rezayatname = () => {
     }
   };
   const [Loading, setLoading] = useState(false);
-
+console.log(formData)
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl mt-10">
       <h1 className="text-2xl font-bold mb-6 text-center">
         فرم رضایت‌نامه ولی شرکت‌کننده
       </h1>
+      <p className="text-red-600 font-bold text-center my-4">
+        ⚠️ این فرم حتما باید توسط ولی فرزند تکمیل شود.
+      </p>
+
       <p className="my-4 font-medium text-right">تاریخ: {getPersianDate()}</p>
 
       <div className="flex flex-col items-start justify-center space-y-2.5 mb-4">
@@ -354,6 +345,14 @@ const Rezayatname = () => {
           Hassasiat={formData.Hassasiat}
           setHassasiat={(value) =>
             setFormData((prev) => ({ ...prev, Hassasiat: value }))
+          }
+          foodAllergy={formData.foodAllergy}
+          setFoodAllergy={(value) =>
+            setFormData((prev) => ({ ...prev, foodAllergy: value }))
+          }
+          drugAllergy={formData.drugAllergy}
+          setDrugAllergy={(value) =>
+            setFormData((prev) => ({ ...prev, drugAllergy: value }))
           }
         />
       </div>
