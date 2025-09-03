@@ -6,6 +6,7 @@ import Canvas from "../components/Canves";
 import emailjs from "@emailjs/browser";
 import Bimari from "../components/Bimari";
 import HassasiatComp from "../components/HassasiatComp";
+import FinishModal from "../components/FinishModal";
 
 const getPersianDate = () => {
   const date = new Date();
@@ -27,6 +28,10 @@ const Rezayatname = () => {
     Hassasiat: "",
     foodAllergy: false,
     drugAllergy: false,
+  });
+  const [Finish, setFinish] = useState({
+    OpenModall: true,
+    data: [],
   });
 
   const canvasRef = useRef(null);
@@ -226,7 +231,11 @@ const Rezayatname = () => {
           console.error(error);
         }
       }
-      alert("فرم با موفقیت به سرور ارسال شد!");
+      setFinish({
+        OpenModall: true,
+        data: data,
+      });
+
     } catch (error) {
       console.error(error);
       alert("ارسال فرم به سرور با خطا مواجه شد.");
@@ -235,7 +244,7 @@ const Rezayatname = () => {
     }
   };
   const [Loading, setLoading] = useState(false);
-console.log(formData)
+
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl mt-10">
       <h1 className="text-2xl font-bold mb-6 text-center">
@@ -373,6 +382,7 @@ console.log(formData)
       >
         {Loading ? "loading..." : "  ثبت فرم"}
       </button>
+      {Finish.OpenModall && <FinishModal data={Finish.data} />}
     </div>
   );
 };
