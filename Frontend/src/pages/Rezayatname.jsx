@@ -146,7 +146,12 @@ const Rezayatname = () => {
       align: "right",
     });
     y += lineHeight * 2;
-
+    doc.text(`بیماری: ${bimari}`, pageWidth - 40, y, {
+      align: "right",
+    });
+    doc.text(`حسساسیت: ${Hassasiat}`, pageWidth - 40, y, {
+      align: "right",
+    });
     // اضافه کردن امضا در سمت راست
     doc.addImage(signatureImage, "PNG", pageWidth - 240, y, 200, 100);
 
@@ -185,6 +190,8 @@ const Rezayatname = () => {
             studentName: formData.studentName,
             relation: formData.relation,
             pdfUrl: data.data.fileUrl, // URL فایل PDF آپلود شده روی سرور
+            hassasiat:Hassasiat,
+            bimari:Bimari
           };
 
           await emailjs.send(
