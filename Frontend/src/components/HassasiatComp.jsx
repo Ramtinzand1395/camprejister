@@ -56,8 +56,8 @@ const HassasiatComp = ({
 
       {/* وقتی کاربر "دارم" انتخاب کنه */}
       {haveHassasiat && (
-        <div className="mt-4">
-          <div className="space-y-4 mb-4">
+        <div className="my-4">
+          <div className=" flex items-center">
             {/* حساسیت دارویی */}
             <div className="flex items-center space-x-3">
               <label className="group flex items-center cursor-pointer">
@@ -85,7 +85,7 @@ const HassasiatComp = ({
                   </svg>
                 </span>
 
-                <span className="ml-3 text-gray-700 group-hover:text-blue-500 font-medium transition-colors duration-300">
+                <span className="ml-3 my-2 text-gray-700 group-hover:text-blue-500 font-medium transition-colors duration-300">
                   حساسیت دارویی دارم
                 </span>
               </label>

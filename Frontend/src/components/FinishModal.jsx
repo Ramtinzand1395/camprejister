@@ -1,13 +1,83 @@
-import React from "react";
+// import React from "react";
+
+// const FinishModal = ({ data }) => {
+//   // دانلود فایل PDF از لینک Cloudinary
+//   const handleDownload = async () => {
+//     if (!data?.fileUrl) return;
+
+//     try {
+//       const response = await fetch(data.fileUrl);
+//       const blob = await response.blob();
+//       const url = window.URL.createObjectURL(blob);
+
+//       const link = document.createElement("a");
+//       link.href = url;
+//       link.download = "form.pdf"; // اسم فایل دلخواه
+//       document.body.appendChild(link);
+//       link.click();
+//       link.remove();
+//       window.URL.revokeObjectURL(url);
+//     } catch (err) {
+//       console.error("دانلود موفق نبود:", err);
+//       alert("دانلود فایل با مشکل مواجه شد.");
+//     }
+//   };
+
+//   const handleClose = () => {
+//     window.location.href = "/"; // ریدایرکت به صفحه اول + رفرش
+//   };
+
+//   return (
+//     <div className="fixed inset-0 z-50 flex items-center justify-center">
+//       {/* Overlay */}
+//       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+
+//       {/* Modal content */}
+//       <div className="relative z-50 w-[80vw] max-w-3xl bg-white rounded-2xl p-6 shadow-xl animate-fadeIn max-h-[90vh] overflow-y-auto text-center">
+//         <h2 className="text-xl font-bold mb-4">ثبت اطلاعات تکمیل شد✅</h2>
+//         <p className="mb-6">
+//           توجه داشته باشید حضور تمامی شرکت کننده‌ها رأس ساعت ۶ بامداد چهارشنبه
+//           درب آتشکده الزامی می‌باشد.
+//         </p>
+
+//         {data?.fileUrl ? (
+//           <button
+//             onClick={handleDownload}
+//             className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
+//           >
+//             دانلود فایل PDF رضایت نامه
+//           </button>
+//         ) : (
+//           <p className="text-red-500">لینک فایل موجود نیست!</p>
+//         )}
+
+//         {/* دکمه بستن */}
+//         <div className="mt-6">
+//           <button
+//             onClick={handleClose}
+//             className="bg-gray-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition"
+//           >
+//             بستن
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default FinishModal;
+
+import React, { useState } from "react";
 
 const FinishModal = ({ data }) => {
-  console.log(data);
+  const [downloading, setDownloading] = useState(false);
 
   // دانلود فایل PDF از لینک Cloudinary
   const handleDownload = async () => {
     if (!data?.fileUrl) return;
 
     try {
+      setDownloading(true);
       const response = await fetch(data.fileUrl);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -22,6 +92,8 @@ const FinishModal = ({ data }) => {
     } catch (err) {
       console.error("دانلود موفق نبود:", err);
       alert("دانلود فایل با مشکل مواجه شد.");
+    } finally {
+      setDownloading(false);
     }
   };
 
@@ -38,15 +110,21 @@ const FinishModal = ({ data }) => {
       <div className="relative z-50 w-[80vw] max-w-3xl bg-white rounded-2xl p-6 shadow-xl animate-fadeIn max-h-[90vh] overflow-y-auto text-center">
         <h2 className="text-xl font-bold mb-4">ثبت اطلاعات تکمیل شد✅</h2>
         <p className="mb-6">
-          توجه داشته باشید حضور تمامی شرکت کننده‌ها رأس ساعت ۶ بامداد چهارشنبه درب آتشکده الزامی می‌باشد.
+          توجه داشته باشید حضور تمامی شرکت کننده‌ها رأس ساعت ۶ بامداد چهارشنبه
+          درب آتشکده الزامی می‌باشد.
         </p>
 
         {data?.fileUrl ? (
           <button
             onClick={handleDownload}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
+            disabled={downloading}
+            className={`px-6 py-3 rounded-lg shadow-md transition ${
+              downloading
+                ? "bg-gray-400 text-white cursor-not-allowed"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
           >
-            دانلود فایل PDF رضایت نامه
+            {downloading ? "در حال دانلود..." : "دانلود فایل PDF رضایت نامه"}
           </button>
         ) : (
           <p className="text-red-500">لینک فایل موجود نیست!</p>

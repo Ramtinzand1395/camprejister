@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import jsPDF from "jspdf";
 import axios from "axios";
 import vazirFontBase64 from "../components/base copy"; // فایل فونت base64
@@ -8,6 +8,7 @@ import Bimari from "../components/Bimari";
 import HassasiatComp from "../components/HassasiatComp";
 import FinishModal from "../components/FinishModal";
 import ProgressBar from "../components/ProgressBar";
+import MedicenCom from "../components/MedicenCom";
 
 const getPersianDate = () => {
   const date = new Date();
@@ -19,6 +20,8 @@ const getPersianDate = () => {
 };
 
 const Rezayatname = () => {
+  const [Loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     parentName: "",
     studentName: "",
@@ -27,6 +30,8 @@ const Rezayatname = () => {
     bimari: "",
     haveHassasiat: null,
     Hassasiat: "",
+    haveMedicen: null,
+    Medicen: "",
     foodAllergy: false,
     drugAllergy: false,
   });
@@ -34,8 +39,20 @@ const Rezayatname = () => {
     OpenModall: false,
     data: [],
   });
-  console.log(formData);
-  console.log(Finish);
+
+  const [loaderText, setLoaderText] = useState("در حال ارسال اطلاعات...");
+
+  useEffect(() => {
+    let timer;
+    if (Loading) {
+      setLoaderText("در حال ارسال اطلاعات...");
+      timer = setTimeout(() => {
+        setLoaderText("لطفاً هنوز منتظر باشید...");
+      }, 5000);
+    }
+    return () => clearTimeout(timer);
+  }, [Loading]);
+
   const canvasRef = useRef(null);
 
   const handleChange = (e) => {
@@ -209,6 +226,8 @@ const Rezayatname = () => {
       formData.bimari;
       formData.haveHassasiat;
       formData.Hassasiat;
+      formData.haveMedicen;
+      formData.Medicen;
       const data = await axios.post(
         "https://ordotabestan.vercel.app/api/upload",
         formDataToSend,
@@ -225,8 +244,13 @@ const Rezayatname = () => {
             pdfUrl: data.data.fileUrl, // URL فایل PDF آپلود شده روی سرور
             hassasiat: formData.Hassasiat,
             bimari: formData.bimari,
+            havemedicen: formData.haveMedicen ? "دارد" : "ندارد",
+            haveHassasiat: formData.haveHassasiat ? "دارد" : "ندارد",
+            haveIllness: formData.haveIllness ? "دارد" : "ندارد",
+
             foodAllergy: formData.foodAllergy ? "دارد" : "ندارد",
             drugAllergy: formData.drugAllergy ? "دارد" : "ندارد",
+            medicen: formData.Medicen,
           };
 
           await emailjs.send(
@@ -239,7 +263,6 @@ const Rezayatname = () => {
           console.error(error);
         }
       }
-      console.log(data);
 
       setFinish({
         OpenModall: true,
@@ -252,7 +275,6 @@ const Rezayatname = () => {
       setLoading(false);
     }
   };
-  const [Loading, setLoading] = useState(false);
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl mt-10">
@@ -373,6 +395,16 @@ const Rezayatname = () => {
             setFormData((prev) => ({ ...prev, drugAllergy: value }))
           }
         />
+        <MedicenCom
+          haveMedicen={formData.haveMedicen}
+          setHaveMedicen={(value) =>
+            setFormData((prev) => ({ ...prev, haveMedicen: value }))
+          }
+          Medicen={formData.Medicen}
+          setMedicen={(value) =>
+            setFormData((prev) => ({ ...prev, Medicen: value }))
+          }
+        />
       </div>
       {/* Canvas امضا */}
       <div className="mt-6">
@@ -384,13 +416,20 @@ const Rezayatname = () => {
         <Canvas canvasRef={canvasRef} />
       </div>
 
-      <button
-        type="button"
-        onClick={handleSubmit}
-        className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-      >
-        {Loading ? "loading..." : "  ثبت فرم"}
-      </button>
+      {Loading ? (
+        <div className="flex flex-col items-center mt-4">
+          <p>{loaderText}</p>
+          <div className="loader"></div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+        >
+          ثبت فرم
+        </button>
+      )}
       {Finish.OpenModall && <FinishModal data={Finish.data} />}
     </div>
   );
