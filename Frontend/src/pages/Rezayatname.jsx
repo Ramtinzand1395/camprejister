@@ -68,6 +68,7 @@ const Rezayatname = () => {
       !formData.studentName ||
       !formData.relation ||
       formData.haveIllness === null ||
+      formData.haveMedicen === null ||
       formData.haveHassasiat === null ||
       (formData.haveIllness === true && formData.bimari.trim() === "") ||
       (formData.haveHassasiat === true && formData.Hassasiat.trim() === "")
