@@ -5,7 +5,7 @@ const MedicenCom = ({ haveMedicen, setHaveMedicen, Medicen, setMedicen }) => {
         <label className="flex items-center container my-5">
           <input
             type="radio"
-            name="illness"
+            name="medicen"
             checked={haveMedicen === true}
             onChange={() => setHaveMedicen(true)}
           />
@@ -22,7 +22,7 @@ const MedicenCom = ({ haveMedicen, setHaveMedicen, Medicen, setMedicen }) => {
         <label className="flex items-center container my-5">
           <input
             type="radio"
-            name="illness"
+            name="medicen"
             checked={haveMedicen === false}
             onChange={() => {
               setHaveMedicen(false);
