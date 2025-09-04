@@ -9,12 +9,12 @@ const Aiinname = () => {
   };
   const navigate = useNavigate();
   const handleNext = () => {
-    console.log(isChecked)
+    console.log(isChecked);
     if (!isChecked) {
       alert("با شرایط موافقت نکردید.");
-      return
+      return;
     }
-    navigate('/rezayatname')
+    navigate("/rezayatname");
   };
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-xl mt-10">
@@ -91,11 +91,19 @@ const Aiinname = () => {
         پرخطر، تیم برگزاری حق حذف و اخراج شرکت‌کننده متخلف را محفوظ می‌داند.
       </p>
 
-      <p className="text-gray-800 font-bold">
+      {/* <p className="text-gray-800 font-bold">
         در صورت هرگونه سوال یا ابهام با شماره{" "}
         <span className="text-blue-600">09138433385</span> (رامتین زندخاوری)
         تماس حاصل فرمایید.
+      </p> */}
+      <p className="text-gray-800 font-bold">
+        در صورت هرگونه سوال یا ابهام با شماره{" "}
+        <a href="tel:09138433385" className="text-blue-600">
+          09138433385
+        </a>{" "}
+        (رامتین زندخاوری) تماس حاصل فرمایید.
       </p>
+
       <label className="flex items-center container my-5">
         <input
           checked={isChecked} // controlled by state
@@ -117,24 +125,24 @@ const Aiinname = () => {
         type="button"
       >
         {/* <Link to={"/rezayatname"}> */}
-          <div class="bg-green-400 rounded-xl h-12 w-1/4 flex items-center justify-center absolute left-1 top-[4px] group-hover:w-[184px] z-10 duration-500">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 1024 1024"
-              height="25px"
-              width="25px"
-            >
-              <path
-                d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"
-                fill="#000000"
-              ></path>
-              <path
-                d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"
-                fill="#000000"
-              ></path>
-            </svg>
-          </div>
-          <p class="translate-x-2">بعدی</p>
+        <div class="bg-green-400 rounded-xl h-12 w-1/4 flex items-center justify-center absolute left-1 top-[4px] group-hover:w-[184px] z-10 duration-500">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1024 1024"
+            height="25px"
+            width="25px"
+          >
+            <path
+              d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"
+              fill="#000000"
+            ></path>
+            <path
+              d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"
+              fill="#000000"
+            ></path>
+          </svg>
+        </div>
+        <p class="translate-x-2">بعدی</p>
         {/* </Link> */}
       </button>
     </div>
