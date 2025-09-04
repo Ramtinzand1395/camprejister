@@ -194,6 +194,18 @@ const Rezayatname = () => {
     );
     y += lineHeight * 2;
 
+    doc.text(
+      `دارو: ${
+        formData.haveMedicen
+          ? formData.Medicen || "ذکر نشده"
+          : "هیچ حساسیتی ندارم"
+      }`,
+      pageWidth - 40,
+      y,
+      { align: "right" }
+    );
+    y += lineHeight * 2;
+
     // اضافه کردن امضا در سمت راست
     doc.addImage(signatureImage, "PNG", pageWidth - 240, y, 200, 100);
 
@@ -247,7 +259,6 @@ const Rezayatname = () => {
             havemedicen: formData.haveMedicen ? "دارد" : "ندارد",
             haveHassasiat: formData.haveHassasiat ? "دارد" : "ندارد",
             haveIllness: formData.haveIllness ? "دارد" : "ندارد",
-
             foodAllergy: formData.foodAllergy ? "دارد" : "ندارد",
             drugAllergy: formData.drugAllergy ? "دارد" : "ندارد",
             medicen: formData.Medicen,
