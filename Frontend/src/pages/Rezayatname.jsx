@@ -7,8 +7,8 @@ import emailjs from "@emailjs/browser";
 import Bimari from "../components/Bimari";
 import HassasiatComp from "../components/HassasiatComp";
 import FinishModal from "../components/FinishModal";
-import ProgressBar from "../components/ProgressBar";
 import MedicenCom from "../components/MedicenCom";
+import BirthDatePicker from "../components/BirthDatePicker";
 
 const getPersianDate = () => {
   const date = new Date();
@@ -34,6 +34,7 @@ const Rezayatname = () => {
     Medicen: "",
     foodAllergy: false,
     drugAllergy: false,
+    birthday: "",
   });
   const [Finish, setFinish] = useState({
     OpenModall: false,
@@ -67,6 +68,7 @@ const Rezayatname = () => {
       !formData.parentName ||
       !formData.studentName ||
       !formData.relation ||
+      !formData.birthday === "" ||
       formData.haveIllness === null ||
       formData.haveMedicen === null ||
       formData.haveHassasiat === null ||
@@ -131,6 +133,11 @@ const Rezayatname = () => {
     });
     y += lineHeight;
     doc.text(`نسبت با دانش‌آموز: ${formData.relation}`, pageWidth - 40, y, {
+      align: "right",
+    });
+    y += lineHeight * 2;
+
+    doc.text(` تاریخ تولد دانش‌آموز: ${formData.birthday}`, pageWidth - 40, y, {
       align: "right",
     });
     y += lineHeight * 2;
@@ -220,6 +227,7 @@ const Rezayatname = () => {
       formDataToSend.append("parentName", formData.parentName);
       formDataToSend.append("studentName", formData.studentName);
       formDataToSend.append("relation", formData.relation);
+      formDataToSend.append("Birthday", formData.birthday);
 
       formDataToSend.append("haveIllness", formData.haveIllness);
       formDataToSend.append("bimari", formData.bimari);
@@ -342,6 +350,35 @@ const Rezayatname = () => {
             <option value="مادر">مادر</option>
           </select>
         </div>
+
+        {/* <div className="w-full">
+          <label className="block font-medium mb-1">تاریخ تولد:</label>
+          <DatePicker
+            value={formData.birthday}
+            onChange={(date) => {
+              if (!date) return;
+
+              const year = date.year;
+              if (year < 1381 || year > 1396) {
+                alert("تاریخ تولد باید بین سال ۱۳۸۱ تا ۱۳۹۶ باشد.");
+                setFormData((prev) => ({ ...prev, birthday: "" }));
+              } else {
+                setFormData((prev) => ({
+                  ...prev,
+                  birthday: date.format("YYYY/MM/DD"),
+                }));
+              }
+            }}
+            calendar={persian}
+            locale={persian_fa}
+            calendarPosition="bottom-right"
+            inputClass="w-full border border-gray-300 rounded-lg px-3 py-2 text-right focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+            containerClassName="w-full"
+            style={{ width: "100%" }}
+            placeholder="انتخاب کنید..."
+          />
+        </div> */}
+        <BirthDatePicker formData={formData} setFormData={setFormData} />
       </div>
       <p className="mt-4">
         بدین‌وسیله رضایت کامل خود را جهت شرکت فرزندم در اردوی یک و نیم روزه
