@@ -68,7 +68,7 @@ const Rezayatname = () => {
       !formData.parentName ||
       !formData.studentName ||
       !formData.relation ||
-      !formData.birthday === "" ||
+      formData.birthday === "" ||
       formData.haveIllness === null ||
       formData.haveMedicen === null ||
       formData.haveHassasiat === null ||
