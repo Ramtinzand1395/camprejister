@@ -166,6 +166,11 @@ const Rezayatname = () => {
     });
     y += lineHeight * 2;
 
+    doc.text(`تاریخ: ${getPersianDate()}`, pageWidth - 40, y, {
+      align: "right",
+    });
+    y += lineHeight * 2;
+
     doc.text(`اینجانب: ${formData.parentName}`, pageWidth - 40, y, {
       align: "right",
     });
@@ -215,10 +220,7 @@ const Rezayatname = () => {
     });
 
     y += lineHeight;
-    doc.text(`تاریخ: ${getPersianDate()}`, pageWidth - 40, y, {
-      align: "right",
-    });
-    y += lineHeight * 2;
+   
 
     doc.text(
       `بیماری: ${
