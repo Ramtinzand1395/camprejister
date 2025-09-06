@@ -5,22 +5,15 @@ import persian_fa from "react-date-object/locales/persian_fa";
 const BirthDatePicker = ({ formData, setFormData }) => {
   return (
     <div className="w-full">
-      <label className="block font-medium mb-1">تاریخ تولد:</label>
+      <label className="block font-medium mb-1">  تاریخ تولد شرکت کننده:</label>
       <DatePicker
         value={formData.birthday}
         onChange={(date) => {
           if (!date) return;
-
-          const year = date.year;
-          if (year < 1381 || year > 1396) {
-            alert("تاریخ تولد باید بین سال ۱۳۸۱ تا ۱۳۹۶ باشد.");
-            setFormData((prev) => ({ ...prev, birthday: "" }));
-          } else {
-            setFormData((prev) => ({
-              ...prev,
-              birthday: date.format("YYYY/MM/DD"),
-            }));
-          }
+          setFormData((prev) => ({
+            ...prev,
+            birthday: date.format("YYYY/MM/DD"),
+          }));
         }}
         calendar={persian}
         locale={persian_fa}
@@ -39,4 +32,5 @@ const BirthDatePicker = ({ formData, setFormData }) => {
     </div>
   );
 };
+
 export default BirthDatePicker;

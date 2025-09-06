@@ -62,37 +62,80 @@ const Rezayatname = () => {
   };
 
   const handleSubmit = async () => {
-    const persianRegex = /^[\u0600-\u06FF\s]+$/; // حروف فارسی و فاصله
-
-    if (
-      !formData.parentName ||
-      !formData.studentName ||
-      !formData.relation ||
-      formData.birthday === "" ||
-      formData.haveIllness === null ||
-      formData.haveMedicen === null ||
-      formData.haveHassasiat === null ||
-      (formData.haveIllness === true && formData.bimari.trim() === "") ||
-      (formData.haveHassasiat === true && formData.Hassasiat.trim() === "")
-    ) {
-      alert("همه موارد را به صورت صحیح تکمیل کنید.");
+    // بررسی پر بودن فیلدهای ضروری
+    if (!formData.parentName || !formData.studentName || !formData.relation) {
+      alert("لطفاً نام ولی، نام دانش‌آموز و نسبت با دانش‌آموز را وارد کنید.");
       return;
     }
+  
+    // بررسی انتخاب تاریخ تولد
+    if (!formData.birthday) {
+      alert("لطفاً تاریخ تولد دانش‌آموز را انتخاب کنید.");
+      return;
+    }
+    console.log(formData);
 
-    // بررسی فارسی بودن فیلدها
+    // بررسی سال تولد (شمسی)
+    
+    const persianToEnglish = (str) => str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
+
+    if (formData.birthday) {
+      const parts = formData.birthday.split("/");
+      const year = parseInt(persianToEnglish(parts[0]), 10);
+    
+      if (isNaN(year)) {
+        alert("فرمت تاریخ تولد صحیح نیست.");
+        return;
+      }
+    
+      if (year < 1380 || year > 1392) {
+        alert("تاریخ تولد باید بین سال ۱۳۸۱ تا ۱۳۹۶ باشد.");
+        return;
+      }
+    }
+    
+    
+  
+    // بررسی وضعیت بیماری
+    if (formData.haveIllness === null) {
+      alert("لطفاً وضعیت بیماری دانش‌آموز را مشخص کنید.");
+      return;
+    }
+    if (formData.haveIllness && formData.bimari.trim() === "") {
+      alert("لطفاً نام بیماری را وارد کنید.");
+      return;
+    }
+  
+    // بررسی وضعیت حساسیت
+    if (formData.haveHassasiat === null) {
+      alert("لطفاً وضعیت حساسیت دانش‌آموز را مشخص کنید.");
+      return;
+    }
+    if (formData.haveHassasiat && formData.Hassasiat.trim() === "") {
+      alert("لطفاً نوع حساسیت را وارد کنید.");
+      return;
+    }
+  
+    // بررسی وضعیت دارو
+    if (formData.haveMedicen === null) {
+      alert("لطفاً وضعیت مصرف دارو توسط دانش‌آموز را مشخص کنید.");
+      return;
+    }
+  
+    // بررسی فارسی بودن نام‌ها
+    const persianRegex = /^[\u0600-\u06FF\s]+$/;
     if (
       !persianRegex.test(formData.parentName) ||
       !persianRegex.test(formData.studentName) ||
       !persianRegex.test(formData.relation)
     ) {
-      alert("لطفاً همه موارد را فقط با حروف فارسی وارد کنید.");
+      alert("لطفاً نام‌ها و نسبت را فقط با حروف فارسی وارد کنید.");
       return;
     }
-
+    
+    // بررسی امضا
     const canvas = canvasRef.current;
     const signatureImage = canvas.toDataURL("image/png");
-
-    // بررسی خالی بودن امضا
     const blankCanvas = document.createElement("canvas");
     blankCanvas.width = canvas.width;
     blankCanvas.height = canvas.height;
