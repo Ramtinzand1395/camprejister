@@ -67,7 +67,7 @@ const Rezayatname = () => {
       alert("لطفاً نام ولی، نام دانش‌آموز و نسبت با دانش‌آموز را وارد کنید.");
       return;
     }
-  
+
     // بررسی انتخاب تاریخ تولد
     if (!formData.birthday) {
       alert("لطفاً تاریخ تولد دانش‌آموز را انتخاب کنید.");
@@ -76,26 +76,25 @@ const Rezayatname = () => {
     console.log(formData);
 
     // بررسی سال تولد (شمسی)
-    
-    const persianToEnglish = (str) => str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
+
+    const persianToEnglish = (str) =>
+      str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
 
     if (formData.birthday) {
       const parts = formData.birthday.split("/");
       const year = parseInt(persianToEnglish(parts[0]), 10);
-    
+
       if (isNaN(year)) {
         alert("فرمت تاریخ تولد صحیح نیست.");
         return;
       }
-    
+
       if (year < 1380 || year > 1392) {
         alert("تاریخ تولد باید بین سال ۱۳۸۱ تا ۱۳۹۶ باشد.");
         return;
       }
     }
-    
-    
-  
+
     // بررسی وضعیت بیماری
     if (formData.haveIllness === null) {
       alert("لطفاً وضعیت بیماری دانش‌آموز را مشخص کنید.");
@@ -105,7 +104,7 @@ const Rezayatname = () => {
       alert("لطفاً نام بیماری را وارد کنید.");
       return;
     }
-  
+
     // بررسی وضعیت حساسیت
     if (formData.haveHassasiat === null) {
       alert("لطفاً وضعیت حساسیت دانش‌آموز را مشخص کنید.");
@@ -115,13 +114,13 @@ const Rezayatname = () => {
       alert("لطفاً نوع حساسیت را وارد کنید.");
       return;
     }
-  
+
     // بررسی وضعیت دارو
     if (formData.haveMedicen === null) {
       alert("لطفاً وضعیت مصرف دارو توسط دانش‌آموز را مشخص کنید.");
       return;
     }
-  
+
     // بررسی فارسی بودن نام‌ها
     const persianRegex = /^[\u0600-\u06FF\s]+$/;
     if (
@@ -132,7 +131,7 @@ const Rezayatname = () => {
       alert("لطفاً نام‌ها و نسبت را فقط با حروف فارسی وارد کنید.");
       return;
     }
-    
+
     // بررسی امضا
     const canvas = canvasRef.current;
     const signatureImage = canvas.toDataURL("image/png");
@@ -305,6 +304,7 @@ const Rezayatname = () => {
             parentName: formData.parentName,
             studentName: formData.studentName,
             relation: formData.relation,
+            birthday: formData.birthday,
             pdfUrl: data.data.fileUrl, // URL فایل PDF آپلود شده روی سرور
             hassasiat: formData.Hassasiat,
             bimari: formData.bimari,
